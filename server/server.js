@@ -170,18 +170,38 @@ app.post('/upload', upload.single('file'), (req, res) => {
       const headers = rows[15].split(',').map(header => header.trim()); // Read the 16th row as headers
       const dataRows = rows.slice(16); // Start processing from the 17th row
     
-      data = dataRows.map(row => {
+      data = dataRows.map((row, rowIndex) => {
         const values = row.split(',').map(value => value.trim());
-        const weightValue = weightIndex !== -1 ? parseFloat(values[weightIndex]) : 0;
-    
+
+        // Ensure weight is a valid number
+        const weightValue = parseFloat(values[getHeaderIndex(headers, headerNames.weight)]);
+        if (isNaN(weightValue)) {
+          console.warn(`Skipping row ${rowIndex + 17} due to invalid weight:, values[getHeaderIndex(headers, headerNames.weight)]`);
+          return null; // Skip invalid rows
+        }
+
+        // Validate waybill_no to be an integer
+        const waybillNo = parseInt(values[getHeaderIndex(headers, headerNames.waybill_no)], 10);
+        if (isNaN(waybillNo)) {
+          console.warn(`Skipping row ${rowIndex + 17} due to invalid waybill_no:, values[getHeaderIndex(headers, headerNames.waybill_no)]`);
+          return null; // Skip invalid rows
+        }
+
+        // Validate order_id to ensure it is not empty
+        const orderId = values[getHeaderIndex(headers, headerNames.order_id)] || '';
+        if (!orderId.trim()) {
+          console.warn(`Skipping row ${rowIndex + 17} due to empty order_id.`);
+          return null; // Skip invalid rows
+        }
+
         return {
-          waybill_no: values[getHeaderIndex(headers, headerNames.waybill_no)] || null,
-          order_id: values[getHeaderIndex(headers, headerNames.order_id)] || '',
+          waybill_no: waybillNo,
+          order_id: orderId,
           destination_city: values[getHeaderIndex(headers, headerNames.destination_city)] || '',
           order_date: new Date(values[getHeaderIndex(headers, headerNames.order_date)]) || null,
           weight: weightHeader === 'Wgt' ? weightValue * 1000 : weightValue // Convert kg to grams if header is 'Weight_kg'
         };
-      });
+      }).filter(row => row !== null); // Remove any invalid rows
     } else {
       // Parse Excel file
       const workbook = xlsx.read(file.buffer, { type: 'buffer' });
@@ -190,22 +210,41 @@ app.post('/upload', upload.single('file'), (req, res) => {
       const jsonData = xlsx.utils.sheet_to_json(sheet, { raw: false, range: 15 }); // Start from the 16th row
     
       const weightHeader = headerNames.weight.find(name => name in jsonData[0]) || '';
-      data = jsonData.map((row) => {
-        const weightValue = weightHeader ? parseFloat(row[weightHeader]) : 0;
-    
+      data = jsonData.map((row, rowIndex) => {
+        const weightValue = parseFloat(row[weightHeader]);
+        if (isNaN(weightValue)) {
+          console.warn(`Skipping row ${rowIndex + 17} due to invalid weight:, row[weightHeader]`);
+          return null; // Skip invalid rows
+        }
+
+        // Validate waybill_no to be an integer
+        const waybillNo = parseInt(row[headerNames.waybill_no.find(name => name in row)], 10);
+        if (isNaN(waybillNo)) {
+          console.warn(`Skipping row ${rowIndex + 17} due to invalid waybill_no:, row[headerNames.waybill_no]`);
+          return null; // Skip invalid rows
+        }
+
+        // Validate order_id to ensure it is not empty
+        const orderId = row[headerNames.order_id.find(name => name in row)] || '';
+        if (!orderId.trim()) {
+          console.warn(`Skipping row ${rowIndex + 17} due to empty order_id.`);
+          return null; // Skip invalid rows
+        }
+
         return {
-          waybill_no: row[headerNames.waybill_no.find(name => name in row)] || null,
-          order_id: row[headerNames.order_id.find(name => name in row)] || '',
+          waybill_no: waybillNo,
+          order_id: orderId,
           destination_city: row[headerNames.destination_city.find(name => name in row)] || '',
           order_date: new Date(row[headerNames.order_date.find(name => name in row)] || '') || null,
           weight: weightHeader === 'Wgt' ? weightValue * 1000 : weightValue // Convert kg to grams if column is 'Weight_kg'
         };
-      });
+      }).filter(row => row !== null); // Remove any invalid rows
     }
   } catch (err) {
     console.error('Error parsing file:', err);
     return res.status(400).send('Error parsing file');
   }
+
   const ratesPath = path.join(__dirname, 'rates.json');
   const loadRates = () => {
     const ratesData = fs.readFileSync(ratesPath, 'utf-8');
@@ -330,7 +369,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
     });
   });
 });
-
 
 // Endpoint to Retrieve Data from MySQL
 app.get('/waybills', (req, res) => {
