@@ -1,0 +1,996 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --sidebar-width: 100px;
+  --sidebar-expanded-width: 250px;
+  --color-text: #616161;
+  --color-text-btn: #ffffff;
+  --header-bg-color: #0006a5; 
+  --sidebar-bg-color: #0006a5; 
+  --accent-color: #fe6c52;
+  --active-color: #ff6347;
+  --bg-color: #f0f0f0;
+  --login-bg-color: rgba(255, 255, 255, 0.8);
+  --button-bg-color: #FDCFF3;
+  --button-hover-color: #C297B8;
+  --error-color: red;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  background-color: #f4f4f4;
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: var(--header-bg-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Add this to space items */
+  padding: 0 30px; /* Adjust padding for spacing */
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header img {
+  width: 150px;
+  height: 70px;
+}
+
+.header button {
+  background-color: var(--accent-color);
+  color: var(--color-text-btn);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.header button:hover {
+  background-color: var(--active-color);
+  transform: scale(1.05);
+}
+
+.header button svg {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.side-menu {
+  height: calc(100% - 80px);
+  width: var(--sidebar-width);
+  position: fixed;
+  top: 80px;
+  padding-top: 40px;
+  background-color: var(--sidebar-bg-color);
+  overflow-x: hidden;
+  transition: width 0.5s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-menu:hover {
+  width: var(--sidebar-expanded-width);
+}
+
+.side-menu .nav-link {
+  padding: 20px 15px;
+  font-size: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.side-menu .nav-link:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.side-menu .nav-link.active {
+  background-color: var(--active-color);
+  color: white;
+}
+
+.side-menu .nav-link i {
+  margin-right: 15px;
+}
+
+.link-text {
+  display: none;
+  white-space: nowrap;
+  padding-left: 10px;
+}
+
+.side-menu:hover .link-text {
+  display: inline;
+}
+
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding: 20px;
+  transition: margin-left 0.5s ease;
+  margin-top: 80px;
+  width: auto;
+}
+
+
+.file-upload {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.7);
+  background-color: #fff5f5;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.file-upload input[type="file"] {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.file-upload button {
+  background-color: #fe6c52;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.file-upload button:hover {
+  background-color: #ff6347;
+  transform: scale(1.05);
+}
+
+.datatable {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  min-width: 1100px;
+}
+
+.datatable button {
+  background-color: #fc3737;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin: 10px 30px 30px 10px;
+  
+}
+
+.datatable button:hover {
+  background-color: #b30000;
+  transform: scale(1.05);
+}
+
+.datatable .table-container {
+  overflow-x: auto;
+}
+
+.datatable table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.datatable th, .datatable td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #7a7a7a;
+  letter-spacing: 2px;
+}
+
+.datatable th {
+  background-color: #0006a5;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.datatable tr:nth-child(even) {
+  background-color: #eae5e5;
+}
+
+
+.datatable td input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: #ffffff00;
+}
+
+.datatable td button {
+  background-color: #ff1c1c;
+  margin: 0 4px;
+}
+
+.datatable td button:hover {
+  background-color: #ff0000;
+}
+
+
+.MuiDialog-root .MuiPaper-root {
+  border-radius: 8px;
+}
+
+.MuiDialogTitle-root {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.MuiDialogContent-root {
+  padding: 20px;
+}
+
+.MuiDialogActions-root {
+  padding: 10px 20px;
+}
+
+.MuiButton-root {
+  text-transform: none;
+  font-size: 14px;
+}
+
+input[type="date"], input[type="number"] {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > * {
+  margin-bottom: 12px;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("./image/login.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.login-wrapper {
+  width: 400px;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  background-color: #ffbaba26;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0);
+}
+
+.login h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #001eff;
+}
+
+.login .input-field {
+  position: relative;
+  border-bottom: 2px solid #000000e2;
+  margin: 15px 0;
+}
+
+.login .input-field label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  color: #000000;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.15s ease;
+}
+.login .input-field input {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #ff0000;
+}
+.login .input-field input:focus~label,
+.login .input-field input:valid~label {
+  font-size: 0.8rem;
+  top: 10px;
+  transform: translateY(-120%);
+}
+
+.login button {
+  background: #ffffff2a;
+  color: #000;
+  border-color: #000000 !important;
+  font-weight: 600;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+  border-radius: 30px !important;
+  margin-top: 30px;
+}
+
+.login button:hover {
+  color: #000000;
+  border-color: #2b2a2a;
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.login .error-message {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #7a7a7a;
+  letter-spacing: 2px;
+}
+
+th {
+  background-color: var(--header-bg-color);
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+  background-color: #eae5e5;
+}
+
+td button {
+  margin: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+td button:hover {
+  transform: scale(1.05);
+}
+
+td button.color-secondary {
+  background-color: #007bff;
+  color: white;
+}
+
+td button.color-error {
+  background-color: #ff1c1c;
+  color: white;
+}
+
+/* Dialog Styling */
+.MuiDialog-root .MuiPaper-root {
+  border-radius: 8px;
+}
+
+.MuiDialogTitle-root {
+  background-color: var(--header-bg-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+.MuiDialogContent-root {
+  padding: 20px;
+}
+
+.MuiDialogActions-root {
+  padding: 10px 20px;
+}
+
+.MuiButton-root {
+  background-color: var(--button-bg-color);
+  color: var(--color-text-btn);
+  text-transform: none;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.MuiButton-root:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > * {
+  margin-bottom: 12px;
+}
+
+.MuiTextField-root {
+  margin: 8px 0;
+}
+
+.autocomplete-container {
+  margin-bottom: 12px;
+}
+
+/* Additional Button Styling */
+button.add-new-weight-btn {
+  background-color: var(--button-bg-color);
+  color: var(--color-text-btn);
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-bottom: 20px;
+}
+
+button.add-new-weight-btn:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
+
+h2{
+  color: orange;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  padding-left: 4px !important;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.submit-button {
+  margin-left: 40%;
+  background-color: var(--accent-color);
+  color: var(--color-text-btn);
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.submit-button:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
+
+/* General styles for the filter section */
+.filter {
+  margin: 0 auto;
+  width: 40%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: #fce8e8;
+  border-radius: 8px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  float: left;
+  margin: 10px 2% 4% 6%;
+}
+
+ h2{
+  font-size: 27px;
+  font-weight: 600;
+}
+
+/* Style for the select elements */
+.filter select {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #413939;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Style for the buttons */
+.filter button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #fe6c52;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 15px;
+}
+
+.filter button:hover {
+  background-color: #ff6347;
+  transform: scale(1.05);
+}
+
+/* Style for the button group */
+.filter .button-group {
+  display: flex;
+  gap: 10px;
+}
+
+
+
+.Exported{
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #fe6c52;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 15px;
+}
+
+.Exported:hover{  
+background-color: #ff6347;
+transform: scale(1.05);
+}
+
+
+.filter2{
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fce8e8;
+  border-radius: 8px;
+  box-shadow: 0 -2px 7px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+}
+
+.filter2 label{
+  color: red;
+  font-size: 17px;
+  font-weight: 600;
+  padding-top: 10px;
+}
+
+
+.filter2 input{
+  padding: 10px;
+  border: 1px solid #413939;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #000000;
+}
+
+
+.filter2 select {
+  width: 100% !important;
+  padding: 10px;
+  border: 1px solid #413939;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+
+.table{
+  width: 100%;
+}
+
+.table .client{
+  width: 50%;
+  min-height: 50px;
+  margin: 0 auto;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+.addcliend {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.addcliend h2 {
+  color: #001eff; /* Matching your theme color */
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.addcliend .add {
+  margin-bottom: 20px;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.addcliend .add input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.addcliend .rate {
+  margin-bottom: 20px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.addcliend .rate h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #ff3131;
+}
+
+.addcliend .rate div {
+  margin-bottom: 10px;
+}
+
+.addcliend .rate input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.addcliend button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.addcliend button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.addcliend .list {
+  margin-top: 50px !important;
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+
+.addcliend .list h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #ff3131;
+}
+
+.addcliend .list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.addcliend .list li {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addcliend .list li button {
+  background-color: #ff1c1c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-left: 10px;
+}
+
+.addcliend .list li button:hover {
+  background-color: #e60000;
+  transform: scale(1.05);
+}
+
+.addcliend .list li button.edit {
+  background-color: #007bff;
+  margin-right: 10px;
+}
+
+.selectedclient {
+  padding: 20px;
+  background-color: #f9f9f9; /* Background color */
+  border-radius: 8px; /* Border radius */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Box shadow */
+  margin: 20px auto;
+}
+
+.select label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000; /* Text color */
+  margin-right: 10px;
+}
+
+.select select {
+  padding: 10px; /* Padding */
+  border: 1px solid #ccc; /* Input border color */
+  border-radius: 4px; /* Border radius */
+  font-size: 16px; /* Font size */
+  color: #000000; /* Text color */
+}
+
+.table {
+  margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th, .table td {
+  padding: 12px;
+  border-bottom: 1px solid #ccc; /* Border bottom color */
+  text-align: center;
+}
+
+.table th {
+  background-color: #007bff; /* Primary color */
+  color: white;
+}
+
+.table td input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc; /* Input border color */
+  border-radius: 4px; /* Border radius */
+  font-size: 16px; /* Font size */
+  color: #000000; /* Text color */
+}
+
+button {
+  background-color: #ff3131; /* Primary color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px; /* Border radius */
+  font-size: 16px; /* Font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s; /* Transition */
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #e60000; /* Secondary color */
+  transform: scale(1.05);
+}
+
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 20mm;
+  }
+  body {
+    margin: none;
+  }
+  table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 12px;
+    word-wrap: break-word;
+  }
+  .print-hidden {
+    display: none;
+  }
+}
+
+
+
+/* Rates container */
+.rates {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  width: 80%;
+  margin:  0 auto;
+}
+
+/* Headings */
+.rates h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #ffa200;
+  font-size: 30px;
+}
+
+.rates h3 {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+
+/* Label styles */
+.rates label {
+  font-size: 14px;
+  color: blue;
+  margin-right: 10px;
+  font-size: 15px;
+}
+
+/* Input field styles */
+.rates input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: var(--bg-color);
+  color: black;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.rates input[type="number"]:focus {
+  outline: none;
+  border-color: var(--active-color);
+}
+
+/* Form group container */
+.rates div {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Submit button styles */
+.rates button[type="submit"] {
+  padding: 10px 20px;
+  background-color: var(--header-bg-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50%;
+  margin: 20px auto;
+}
+
+.rates button[type="submit"]:hover {
+  background-color: var(--active-color);
+}
+
+/* Message */
+.rates p {
+  color: green;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Loading message */
+.loading {
+  font-size: 18px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+
+
+.table-container .error{
+  color: red;
+  text-align: center;
+  font-size: 20px;
+}
+
+.supertotal{
+  display: none;
+}
